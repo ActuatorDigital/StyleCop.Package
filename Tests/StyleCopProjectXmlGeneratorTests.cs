@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// Copyright (c) AIR Pty Ltd. All rights reserved.
+
+using System.IO;
 using AIR.StyleCopAnalyzer.Editor;
 using NUnit.Framework;
 

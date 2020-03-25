@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// Copyright (c) AIR Pty Ltd. All rights reserved.
+
+using System.IO;
 using System.Xml.Linq;
 
 namespace AIR.StyleCopAnalyzer.Editor {
@@ -49,10 +51,15 @@ namespace AIR.StyleCopAnalyzer.Editor {
             if (!_packageDirectory.Exists)
                 throw new DirectoryNotFoundException(_packageDirectory.FullName);
 
-            var jsonRulesPath = _packageDirectory.FullName + "/stylecop.json";
-            var jsonRulesFile = new FileInfo(jsonRulesPath);
-            if (!jsonRulesFile.Exists)
-                throw new FileNotFoundException(jsonRulesFile.FullName);
+            var jsonRulesProjectPath = "./ProjectSettings/stylecop.json";
+            var jsonRulesFile = new FileInfo(jsonRulesProjectPath);
+
+            if (!jsonRulesFile.Exists) {
+                var jsonRulesPackagePath = _packageDirectory.FullName + "/stylecop.json";
+                jsonRulesFile = new FileInfo(jsonRulesPackagePath);
+                if (!jsonRulesFile.Exists)
+                    throw new FileNotFoundException(jsonRulesFile.FullName);
+            }
 
             var itemGroup = new XElement(_xNamespace + "ItemGroup");
             var jsonRulesReference = new XElement(_xNamespace + "AdditionalFiles");
