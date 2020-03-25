@@ -5,15 +5,17 @@ using NUnit.Framework;
 
 [TestFixture]
 public class StyleCopProjectPostProcessorTests {
-    private string _styleCopDestFile;
 
-    const string PROJECT_FILE_XML = "<Project></Project>";
+    private const string PROJECT_FILE_XML = "<Project></Project>";
+    private string _styleCopDestFile;
 
     [Test]
     [Sequential]
-    public void OnGeneratedCSProject_EmptyProject_AddsStyleCopReferences(
-        [Values("<AdditionalFiles Include=", "<Analyzer Include=", "<Analyzer Include=")] string referenceElement,
-        [Values("stylecop.json", "/StyleCop.Analyzers.dll", "/StyleCop.Analyzers.CodeFixes.dll")] string referenceFile
+    public void OnGeneratedCSProject_EmptyProject_AddsStyleCopMarkup(
+        [Values("<AdditionalFiles Include=", "<Analyzer Include=", "<Analyzer Include=", "<CodeAnalysisRuleSet>")]
+        string referenceElement,
+        [Values("stylecop.json", "/StyleCop.Analyzers.dll", "/StyleCop.Analyzers.CodeFixes.dll", "stylecop.ruleset")]
+        string referenceFile
     ) {
         // Act
         var referencedProject = StyleCopProjectPostProcessor
