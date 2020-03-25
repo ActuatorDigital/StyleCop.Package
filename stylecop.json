@@ -1,0 +1,20 @@
+﻿{
+  "__comment":"See configuration instructions at: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md#getting-started-with-stylecopjson",
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "AIR Pty Ltd",
+      "xmlHeader": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "blankLinesBetweenUsingGroups": "omit"
+    },
+    "namingRules": { "allowCommonHungarianPrefixes": false },
+    "maintainabilityRules": { "topLevelTypes": [ "class", "interface", "struct" ] },
+    "layoutRules": {
+       "allowConsecutiveUsings": true,
+       "newlineAtEndOfFile": "omit"
+    }
+  }
+}

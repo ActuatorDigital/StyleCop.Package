@@ -1,14 +1,23 @@
 ﻿using System.IO;
 using System.Xml.Linq;
-using UnityEngine;
 
 namespace AIR.StyleCopAnalyzer.Editor {
     public class StyleCopProjectXmlGenerator {
-        
+        const string INCLUDE_ATTRIBUTE_NAME = "Include";
         private readonly XDocument _projectXmlDocument;
+        private readonly DirectoryInfo _packageDirectory;
+        private readonly XNamespace _xNamespace;
+        private readonly XElement _xDocumentRoot;
 
         public StyleCopProjectXmlGenerator(string projectXmlString) {
             _projectXmlDocument = XDocument.Parse(projectXmlString);
+
+            var packagePath = "./Packages/com.air.stylecop";
+            _packageDirectory = new DirectoryInfo(packagePath);
+
+            _xDocumentRoot = _projectXmlDocument.Root;
+            if (_xDocumentRoot == null) return;
+            _xNamespace = _xDocumentRoot.Name.NamespaceName;
         }
 
         public override string ToString() {
@@ -16,38 +25,51 @@ namespace AIR.StyleCopAnalyzer.Editor {
         }
 
         public void ReferenceStyleCopDlls() {
-            var packagePath = "./Packages/com.air.stylecop";
-            var packageDirectory = new DirectoryInfo(packagePath);
-            if (!packageDirectory.Exists) return;
+            if (!_packageDirectory.Exists)
+                throw new DirectoryNotFoundException(_packageDirectory.FullName);
 
-            XElement xDocumentRoot = _projectXmlDocument.Root;
-            if (xDocumentRoot == null) return;
+            var itemGroup = new XElement(_xNamespace + "ItemGroup");
 
-            XNamespace xNamespace = xDocumentRoot.Name.NamespaceName;
-            XElement itemGroup = new XElement(xNamespace + "ItemGroup");
-
-            var analyzerDllPath = packageDirectory.FullName + "/StyleCop.Analyzers.dll";
+            var analyzerDllPath = _packageDirectory.FullName + "/StyleCop.Analyzers.dll";
             var analyzerDllFile = new FileInfo(analyzerDllPath);
-            AddAssemblyToAnalyzerGroup(xNamespace, itemGroup, analyzerDllFile);
+            if (!analyzerDllFile.Exists)
+                throw new FileNotFoundException(analyzerDllFile.FullName);
+            AddAssemblyToAnalyzerGroup(itemGroup, analyzerDllFile);
 
-            var codeFixesDllPath = packageDirectory.FullName + "/StyleCop.Analyzers.CodeFixes.dll";
+            var codeFixesDllPath = _packageDirectory.FullName + "/StyleCop.Analyzers.CodeFixes.dll";
             var codeFixesDllFile = new FileInfo(codeFixesDllPath);
-            AddAssemblyToAnalyzerGroup(xNamespace, itemGroup, codeFixesDllFile);
+            if (!codeFixesDllFile.Exists)
+                throw new FileNotFoundException(codeFixesDllFile.FullName);
+            AddAssemblyToAnalyzerGroup(itemGroup, codeFixesDllFile);
 
-            xDocumentRoot.Add(itemGroup);
+            _xDocumentRoot.Add(itemGroup);
         }
 
-        private static void AddAssemblyToAnalyzerGroup(
-            XNamespace xDocumentRoot,
+        public void ReferenceStyleCopJsonRules() {
+            if (!_packageDirectory.Exists)
+                throw new DirectoryNotFoundException(_packageDirectory.FullName);
+
+            var jsonRulesPath = _packageDirectory.FullName + "/stylecop.json";
+            var jsonRulesFile = new FileInfo(jsonRulesPath);
+            if (!jsonRulesFile.Exists)
+                throw new FileNotFoundException(jsonRulesFile.FullName);
+
+            var itemGroup = new XElement(_xNamespace + "ItemGroup");
+            var jsonRulesReference = new XElement(_xNamespace + "AdditionalFiles");
+            jsonRulesReference.Add(new XAttribute(INCLUDE_ATTRIBUTE_NAME, jsonRulesFile.FullName));
+            itemGroup.Add(jsonRulesReference);
+
+            _xDocumentRoot.Add(itemGroup);
+        }
+
+        private void AddAssemblyToAnalyzerGroup(
             XElement itemGroup,
             FileInfo dllFile
         ) {
-            if (dllFile.Exists) {
-                var analyzerReference = new XElement(xDocumentRoot + "Analyzer");
-                const string INCLUDE_ATTRIBUTE_NAME = "Include";
-                analyzerReference.Add(new XAttribute(INCLUDE_ATTRIBUTE_NAME, dllFile.FullName));
-                itemGroup.Add(analyzerReference);
-            }
+            if (!dllFile.Exists) return;
+            var analyzerReference = new XElement(_xNamespace + "Analyzer");
+            analyzerReference.Add(new XAttribute(INCLUDE_ATTRIBUTE_NAME, dllFile.FullName));
+            itemGroup.Add(analyzerReference);
         }
     }
 }
