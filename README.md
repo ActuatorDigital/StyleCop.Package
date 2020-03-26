@@ -1,5 +1,6 @@
 AIR StyleCop Unity Plugin 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/AnImaginedReality/StyleCop.Package)
+[![GitHub issues](https://img.shields.io/github/issues/AnImaginedReality/StyleCop.Package)](https://github.com/AnImaginedReality/StyleCop.Package/issues)
 =====================
 Easy to install and simple to configure and use, the AIR StyleCop package adds StyleCop to the Unity environment.
 
