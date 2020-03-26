@@ -72,4 +72,23 @@ public class StyleCopProjectXmlGeneratorTests {
         StringAssert.Contains(codeFixDllPath, projectStr, "Style rules reference missing.");
         StringAssert.Contains(XML_ITEMGROUP_CLOSE, projectStr, "ItemGroup tag close missing.");
     }
+
+    [Test]
+    public void ReferenceStyleCopRuleSet_ProjectWithPropertyGroups_AddsToAllPropertyGroups() {
+        // Arrange
+        const string XML_PROJECT_WITH_TARGETS = "<Project></Project>";
+        const string XML_RULESET_ELEMENT_OPEN = "<CodeAnalysisRuleSet>";
+        const string XML_RULESET_ELEMENT_CLOSE = "</CodeAnalysisRuleSet>";
+        var projectXmlGenerator = new StyleCopProjectXmlGenerator(XML_PROJECT_WITH_TARGETS);
+
+        // Act
+        projectXmlGenerator.ReferenceStyleCopRuleSet();
+
+        // Assert
+        var projectStr = projectXmlGenerator.ToString();
+        const string OPEN_RULESET_MISSING_MESSAGE = "CodeAnalysisRuleSet open tag not added to project.";
+        StringAssert.Contains(XML_RULESET_ELEMENT_OPEN, projectStr, OPEN_RULESET_MISSING_MESSAGE);
+        const string CLOSE_RULESET_MISSING_MESSAGE = "CodeAnalysisRuleSet close tag not added to project.";
+        StringAssert.Contains(XML_RULESET_ELEMENT_CLOSE, projectStr, CLOSE_RULESET_MISSING_MESSAGE);
+    }
 }

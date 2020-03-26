@@ -5,7 +5,9 @@ using System.Xml.Linq;
 
 namespace AIR.StyleCopAnalyzer.Editor {
     public class StyleCopProjectXmlGenerator {
-        const string INCLUDE_ATTRIBUTE_NAME = "Include";
+
+        private const string INCLUDE_ATTRIBUTE_NAME = "Include";
+        private const string PROJECT_SETTINGS_PATH = "./ProjectSettings";
         private readonly XDocument _projectXmlDocument;
         private readonly DirectoryInfo _packageDirectory;
         private readonly XNamespace _xNamespace;
@@ -51,11 +53,12 @@ namespace AIR.StyleCopAnalyzer.Editor {
             if (!_packageDirectory.Exists)
                 throw new DirectoryNotFoundException(_packageDirectory.FullName);
 
-            var jsonRulesProjectPath = "./ProjectSettings/stylecop.json";
+            const string JSON_FILE_NAME = "stylecop.json";
+            var jsonRulesProjectPath = $"{PROJECT_SETTINGS_PATH}/{JSON_FILE_NAME}";
             var jsonRulesFile = new FileInfo(jsonRulesProjectPath);
 
             if (!jsonRulesFile.Exists) {
-                var jsonRulesPackagePath = _packageDirectory.FullName + "/stylecop.json";
+                var jsonRulesPackagePath = $"{_packageDirectory.FullName}/{JSON_FILE_NAME}";
                 jsonRulesFile = new FileInfo(jsonRulesPackagePath);
                 if (!jsonRulesFile.Exists)
                     throw new FileNotFoundException(jsonRulesFile.FullName);
@@ -64,6 +67,29 @@ namespace AIR.StyleCopAnalyzer.Editor {
             var itemGroup = new XElement(_xNamespace + "ItemGroup");
             var jsonRulesReference = new XElement(_xNamespace + "AdditionalFiles");
             jsonRulesReference.Add(new XAttribute(INCLUDE_ATTRIBUTE_NAME, jsonRulesFile.FullName));
+            itemGroup.Add(jsonRulesReference);
+
+            _xDocumentRoot.Add(itemGroup);
+        }
+
+        public void ReferenceStyleCopRuleSet() {
+            if (!_packageDirectory.Exists)
+                throw new DirectoryNotFoundException(_packageDirectory.FullName);
+
+            const string RULESET_FILE_NAME = "stylecop.ruleset";
+            var jsonRulesProjectPath = $"{PROJECT_SETTINGS_PATH}/{RULESET_FILE_NAME}";
+            var jsonRulesFile = new FileInfo(jsonRulesProjectPath);
+
+            if (!jsonRulesFile.Exists) {
+                var jsonRulesPackagePath = $"{_packageDirectory.FullName}/{RULESET_FILE_NAME}";
+                jsonRulesFile = new FileInfo(jsonRulesPackagePath);
+                if (!jsonRulesFile.Exists)
+                    throw new FileNotFoundException(jsonRulesFile.FullName);
+            }
+
+            var itemGroup = new XElement(_xNamespace + "PropertyGroup");
+            var jsonRulesReference = new XElement(_xNamespace + "CodeAnalysisRuleSet");
+            jsonRulesReference.Add(jsonRulesFile.FullName);
             itemGroup.Add(jsonRulesReference);
 
             _xDocumentRoot.Add(itemGroup);
