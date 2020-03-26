@@ -4,7 +4,7 @@ using AIR.StyleCopAnalyzer.Editor;
 using NUnit.Framework;
 
 [TestFixture]
-public class StyleCopProjectPostProcessorTests {
+public class StyleCopProjectPostprocessorTests {
 
     private const string PROJECT_FILE_XML = "<Project></Project>";
     private string _styleCopDestFile;
@@ -18,7 +18,7 @@ public class StyleCopProjectPostProcessorTests {
         string referenceFile
     ) {
         // Act
-        var referencedProject = StyleCopProjectPostProcessor
+        var referencedProject = StyleCopProjectPostprocessor
             .OnGeneratedCSProject(string.Empty, PROJECT_FILE_XML);
 
         // Assert
