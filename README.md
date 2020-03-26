@@ -1,8 +1,8 @@
-AIR StyleCop Untiy Plugin
+AIR StyleCop Unity Plugin
 =====================
 Easy to install and simple to configure and use, the AIR StyleCop package adds StyleCop to the Unity environment.
 
-At AIR code quality matters, and stylistic consistency goes a long way to making the code of our projects more readable and maintainable. StyleCop is a great tool for achieving consistency, unfortunately because it's built to work as a [nuget package](https://www.nuget.org/packages/StyleCop.Analyzers/), and because unity manages and rebuilts it's own project files and removing the stylecop reference, this great tool isn't compatible with the unity environment. This unity package addresses that problem, by hooking into unity's asset pipeline and re-creating the nessecairy project references automatically. 
+At AIR code quality matters, and stylistic consistency goes a long way to making the code of our projects more readable and maintainable. StyleCop is a great tool for achieving consistency, unfortunately because it's built to work as a [nuget package](https://www.nuget.org/packages/StyleCop.Analyzers/), and because unity manages and rebuilds its own project files and removes the stylecop reference, this great tool isn't compatible with the unity environment. This unity package addresses that problem, by hooking into unity's asset pipeline and re-creating the necessary project references automatically. 
 
 ## What is StyleCop
 
@@ -18,9 +18,9 @@ Though not recommended, it is also possible to add the package to the project di
 
 ## Configuring
 
-This AIR Stylecop Unity Package by default provides AIR's own rulesets and configuration, but using your own is easy. Simply download copies of the provided [stylecop.ruleset][1] and [stylecop.json][2] files as a starting point, (or import your own) and place them in your Unity project's **/ProjectSettings/** folder. The next time Unity rebuilds it's solution files it will reference these rather than the defaults. You can edit these rule fies using your IDE, or by hand by refering the relevent documentation.
+This AIR Stylecop Unity Package by default provides AIR's own rulesets and configuration, but using your own is easy. Simply download copies of the provided [stylecop.ruleset][1] and [stylecop.json][2] files as a starting point (or import your own), and place them in your Unity project's **/ProjectSettings/** folder. The next time Unity rebuilds its solution files it will reference these rather than the defaults. You can edit these rule fies using your IDE, or by hand by referring to the relevent documentation.
 
-Documentation for [stylecop.ruleset][1] is available on the StyleCop github [documentation][3] or on Microsoft's Visyal studio [documentation][5]. When configuring stylecop.json see the StyleCop github [documentation][4] page also. 
+Documentation for [stylecop.ruleset][1] is available on the StyleCop github [documentation][3] or on Microsoft's Visual studio [documentation][5]. When configuring stylecop.json see the StyleCop github [documentation][4] page also. 
 
 [1]: https://github.com/AnImaginedReality/StyleCop.Package/blob/master/stylecop.ruleset
 [2]: https://github.com/AnImaginedReality/StyleCop.Package/blob/master/stylecop.json
@@ -28,7 +28,7 @@ Documentation for [stylecop.ruleset][1] is available on the StyleCop github [doc
 [4]: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md#getting-started-with-stylecopjson
 [5]: https://docs.microsoft.com/en-us/visualstudio/code-quality/rule-set-reference?view=vs-2019
 
-To maintain consistent style across teams/projects, we recommend checking stylecop.ruleset and stylecop.json in to the project's version control systems. In this way a project's conventions can be implicitly enforced.
+To maintain consistent style across teams/projects, we recommend checking stylecop.ruleset and stylecop.json into the project's version control systems. In this way a project's conventions can be implicitly enforced.
 
 ## Running the Tests
 
