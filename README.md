@@ -57,3 +57,6 @@ Run the EditMode tests for this project through the Unity Editor, by adding it a
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For past and present versions available, see the [tags on this repository](https://github.com/AnImaginedReality/StyleCop.Package/tags). 
 
+## License [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/AnImaginedReality/StyleCop.Package/blob/master/LICENSE)
+This project is licensed udner the MIT license, which provides permission to reuse proprietary this software without warranty, and with a copy of the original MIT license included. 
+
